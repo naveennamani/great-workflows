@@ -1,0 +1,27 @@
+name: save docker image as artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      imageName:
+        description: image to be pulled
+        required: true
+      artifactName:
+        description: artifact name
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull docker image
+        run: docker pull ${{ github.event.inputs.imageName }}
+      
+      - name: Save image as tar file
+        run: docker save -o ${{ github.event.inputs.artifactName }} ${{ github.event.inputs.imageName }}
+
+      - name: upload artifacts
+        uses: nanoufo/action-upload-artifacts-and-release-assets@v1.4
+        with:
+          path: ${{ github.event.inputs.artifactName }}
