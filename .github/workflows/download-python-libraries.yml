@@ -25,7 +25,7 @@ jobs:
 
       - name: Download packages
         run: |
-          pip download --only-binary :all: --platform win_amd64 --python-version ${{ github.event.inputs.pythonVersions }} -d packages ${{ github.event.inputs.libraryName }}
+          pip download --only-binary :all: --platform win_amd64 --python-version ${{ github.event.inputs.pythonVersion }} -d packages ${{ github.event.inputs.libraryName }}
 
       - name: Compress the project
         run: tar -czf ${{ github.event.inputs.artifactName }}.tar.gz packages
