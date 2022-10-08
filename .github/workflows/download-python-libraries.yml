@@ -1,0 +1,36 @@
+name: setup node.js project with dependencies
+
+on:
+  workflow_dispatch:
+    inputs:
+      libraryName:
+        description: library to download
+        required: true
+      pythonVersion:
+        description: python version required
+        required: true
+        default: "3.9"
+      artifactName:
+        description: artifact name
+        required: true
+        default: packages
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup python
+        uses: actions/setup-python@v4.2.0
+
+      - name: Download packages
+        run: |
+          pip download --only-binary :all: --platform win_amd64 --python-version ${{ github.event.inputs.pythonVersion }} -d packages ${{ github.event.inputs.libraryName }}
+
+      - name: Compress the project
+        run: tar -czf ${{ github.event.inputs.artifactName }}.tar.gz packages
+
+      - name: upload artifacts
+        uses: nanoufo/action-upload-artifacts-and-release-assets@v1.4
+        with:
+          path: ${{ github.event.inputs.artifactName }}.tar.gz
