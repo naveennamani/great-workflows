@@ -1,4 +1,4 @@
-name: setup node.js project with dependencies
+name: download python libraries and their dependencies
 
 on:
   workflow_dispatch:
